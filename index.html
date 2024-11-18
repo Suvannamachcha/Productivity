@@ -13,6 +13,12 @@
     <input id="password" type="password" placeholder="Password">
     <button id="login-btn">Login</button>
     <p id="error-message"></p>
+
+    <h2>Sign Up</h2>
+    <input id="signup-email" type="email" placeholder="Email">
+    <input id="signup-password" type="password" placeholder="Password">
+    <button id="signup-btn">Sign Up</button>
+    <p id="signup-error-message"></p>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
@@ -37,6 +43,25 @@
       } else {
         // Successful login, redirect to index or main page
         window.location.href = 'dashboard.html';
+      }
+    });
+
+    // Handle sign-up form submission
+    document.getElementById('signup-btn').addEventListener('click', async () => {
+      const signupEmail = document.getElementById('signup-email').value;
+      const signupPassword = document.getElementById('signup-password').value;
+      
+      const { user, error } = await supabase.auth.signUp({
+        email: signupEmail,
+        password: signupPassword,
+      });
+
+      if (error) {
+        document.getElementById('signup-error-message').innerText = error.message;
+      } else {
+        // Successful sign-up, log the user in or send a confirmation email
+        document.getElementById('signup-error-message').innerText = 'Sign-up successful! Please log in.';
+        // Optionally, you could automatically log the user in or show a confirmation step
       }
     });
   </script>
