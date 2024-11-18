@@ -26,14 +26,14 @@
 
   <script src="pages/_app.js"></script>
   <script>
-    // Check if the user is logged in
+    // Redirect to login if the user is not authenticated
     supabase.auth.getUser().then(({ data: user, error }) => {
       if (user) {
-        // User is logged in, show content
+        // User is logged in, show the main page content
         document.getElementById('protected-content').style.display = 'block';
         document.getElementById('loading-message').style.display = 'none';
       } else {
-        // User not logged in, redirect to login page
+        // User is not logged in, redirect to login page
         window.location.href = 'login.html';
       }
     });
