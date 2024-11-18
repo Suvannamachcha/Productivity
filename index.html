@@ -3,10 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Productivity Suite</title>
+  <title>Login</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <p>Checking authentication...</p>
+  <div class="container">
+    <h1>Login</h1>
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button id="login-btn">Login</button>
+    <p id="error-message"></p>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
@@ -15,14 +22,21 @@
     const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94Y2x2bmtpaWFxdWh1amJkbmp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE5NDM4NDEsImV4cCI6MjA0NzUxOTg0MX0.4V4WNwq8ktDKP8xmbOFgrO_emDBkITpfwk3H9IlKPv0';
     const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-    // Check authentication status
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        // User is authenticated, redirect to dashboard
-        window.location.href = 'dashboard.html';
+    // Handle login form submission
+    document.getElementById('login-btn').addEventListener('click', async () => {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+      if (error) {
+        document.getElementById('error-message').innerText = error.message;
       } else {
-        // User is not authenticated, redirect to login page
-        window.location.href = 'login.html';
+        // Successful login, redirect to index or main page
+        window.location.href = 'dashboard.html';
       }
     });
   </script>
