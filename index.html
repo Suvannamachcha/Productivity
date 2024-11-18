@@ -4,45 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Productivity Suite</title>
-  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- Content hidden by default -->
-  <div id="protected-content" style="display: none;">
-    <div class="container">
-      <h1>Welcome to Productivity Suite</h1>
-      <div class="menu">
-        <a href="file-manager.html">File Manager</a>
-        <a href="calendar.html">Calendar</a>
-        <a href="reminders.html">Reminders</a>
-        <a href="productivity.html">Productivity Tracker</a>
-        <a href="micromanager.html">Micromanager</a>
-        <button id="logout-btn">Logout</button>
-      </div>
-    </div>
-  </div>
-  <!-- Show this if user is not logged in -->
-  <p id="loading-message">Checking authentication...</p>
+  <p>Checking authentication...</p>
 
-  <script src="pages/_app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
-    // Redirect to login if the user is not authenticated
-    supabase.auth.getUser().then(({ data: user, error }) => {
-      if (user) {
-        // User is logged in, show the main page content
-        document.getElementById('protected-content').style.display = 'block';
-        document.getElementById('loading-message').style.display = 'none';
+    // Initialize Supabase client
+    const supabaseUrl = 'https://oxclvnkiiaquhujbdnjt.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94Y2x2bmtpaWFxdWh1amJkbmp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE5NDM4NDEsImV4cCI6MjA0NzUxOTg0MX0.4V4WNwq8ktDKP8xmbOFgrO_emDBkITpfwk3H9IlKPv0';
+    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+    // Check authentication status
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        // User is authenticated, redirect to dashboard
+        window.location.href = 'dashboard.html';
       } else {
-        // User is not logged in, redirect to login page
+        // User is not authenticated, redirect to login page
         window.location.href = 'login.html';
       }
-    });
-
-    // Logout functionality
-    document.getElementById('logout-btn').addEventListener('click', () => {
-      supabase.auth.signOut().then(() => {
-        window.location.href = 'login.html';
-      });
     });
   </script>
 </body>
